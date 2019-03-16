@@ -74,4 +74,17 @@ resource "aws_instance" "access_vm" {
     Name          = "access-vm"
     ResourceGroup = "${local.env}"
   }
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "centos"
+      private_key = "${file("dev-keypair.pem")}"
+    }
+
+    scripts = [
+      "./scripts/update.sh",
+      "./scripts/docker.sh",
+    ]
+  }
 }
