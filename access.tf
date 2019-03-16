@@ -27,6 +27,14 @@ resource "aws_security_group" "access_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # VPN
+  ingress {
+    from_port   = 1194
+    to_port     = 1194
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Internet
   egress {
     from_port   = 0
@@ -85,6 +93,13 @@ resource "aws_instance" "access_vm" {
     scripts = [
       "./scripts/update.sh",
       "./scripts/docker.sh",
+      "./scripts/vpn_install.sh",
+      "./scripts/vpn_server_config.sh",
+      "./scripts/vpn_client_config.sh",
     ]
+  }
+
+  provisioner "local-exec" {
+    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./dev-keypair.pem centos@${aws_instance.access_vm.public_ip}:~/dev.ovpn ."
   }
 }

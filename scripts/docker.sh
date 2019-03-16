@@ -11,3 +11,7 @@ sudo yum install -y docker-ce \
 	containerd.io
 
 sudo systemctl start docker
+
+sudo groupadd docker
+
+sudo usermod -aG docker $USER
