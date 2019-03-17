@@ -93,9 +93,7 @@ resource "aws_instance" "access_vm" {
     scripts = [
       "./scripts/update.sh",
       "./scripts/docker.sh",
-      "./scripts/vpn_install.sh",
-      "./scripts/vpn_server_config.sh",
-      "./scripts/vpn_client_config.sh",
+      "./scripts/vpn.sh",
     ]
   }
 
