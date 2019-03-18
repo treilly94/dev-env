@@ -1,4 +1,6 @@
 resource "aws_instance" "jenkins_vm" {
+  count = "${var.jenkins_count}"
+
   ami           = "${data.aws_ami.centos.id}"
   instance_type = "${local.default_vm_size}"
   key_name      = "dev-keypair"
