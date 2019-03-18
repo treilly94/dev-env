@@ -17,16 +17,22 @@ resource "aws_instance" "jenkins_vm" {
     ResourceGroup = "${local.env}"
   }
 
-  # provisioner "remote-exec" {
-  #   connection {
-  #     type        = "ssh"
-  #     user        = "centos"
-  #     private_key = "${file("dev-keypair.pem")}"
-  #   }
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      host        = "${aws_instance.jenkins_vm.private_ip}"
+      user        = "centos"
+      private_key = "${file("dev-keypair.pem")}"
 
-  #   scripts = [
-  #     "./scripts/update.sh",
-  #     "./scripts/docker.sh",
-  #   ]
-  # }
+      bastion_host        = "${aws_instance.access_vm.public_ip}"
+      bastion_user        = "centos"
+      bastion_private_key = "${file("dev-keypair.pem")}"
+    }
+
+    scripts = [
+      "./scripts/update.sh",
+      "./scripts/docker.sh",
+      "./scripts/jenkins.sh",
+    ]
+  }
 }
