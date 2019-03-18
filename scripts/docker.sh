@@ -10,8 +10,12 @@ sudo yum install -y docker-ce \
 	docker-ce-cli \
 	containerd.io
 
+# Start
 sudo systemctl start docker
 
+# Run without sudo
 sudo groupadd docker
-
 sudo usermod -aG docker $USER
+
+# Start on boot
+sudo systemctl enable docker
