@@ -6,3 +6,7 @@ sudo adduser jenkins
 
 # Add jenkins user to the docker group
 sudo usermod -aG docker jenkins
+
+# Allow ssh auth with passwords
+sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+sudo service sshd restart
