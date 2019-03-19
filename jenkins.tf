@@ -75,7 +75,7 @@ resource "aws_instance" "jenkins_agent" {
     scripts = [
       "./scripts/update.sh",
       "./scripts/docker.sh",
-      "./scripts/java.sh",
+      "./scripts/jenkins_agent.sh",
     ]
   }
 }
