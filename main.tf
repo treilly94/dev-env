@@ -11,11 +11,12 @@ locals {
   build_cidr      = "${cidrsubnet(local.vpc_cidr,4,2)}" # 20
 
   hosts = {
-    access  = "${cidrhost(local.access_cidr, 20)}"
-    gitlab  = "${cidrhost(local.build_cidr, 20)}"
-    jenkins = "${cidrhost(local.build_cidr, 21)}"
-    vault   = "${cidrhost(local.build_cidr, 22)}"
-    awx     = "${cidrhost(local.build_cidr, 23)}"
+    access    = "${cidrhost(local.access_cidr, 20)}"
+    gitlab    = "${cidrhost(local.build_cidr, 20)}"
+    jenkins   = "${cidrhost(local.build_cidr, 21)}"
+    sonarqube = "${cidrhost(local.build_cidr, 22)}"
+    vault     = "${cidrhost(local.build_cidr, 23)}"
+    awx       = "${cidrhost(local.build_cidr, 24)}"
   }
 }
 
