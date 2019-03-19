@@ -4,6 +4,7 @@ resource "aws_instance" "access_vm" {
   key_name      = "dev-keypair"
 
   subnet_id              = "${aws_subnet.access_subnet.id}"
+  private_ip             = "${local.hosts["access"]}"
   vpc_security_group_ids = ["${aws_security_group.access_sg.id}"]
   depends_on             = ["aws_internet_gateway.gw"]
   source_dest_check      = false                                  # Needed for the vpn connection

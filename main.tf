@@ -7,8 +7,16 @@ locals {
   env             = "Dev"
   default_vm_size = "t3.nano"
   vpc_cidr        = "10.0.0.0/16"
-  access_cidr     = "${cidrsubnet(local.vpc_cidr,4,3)}" # 20
-  build_cidr      = "${cidrsubnet(local.vpc_cidr,4,4)}" # 20
+  access_cidr     = "${cidrsubnet(local.vpc_cidr,4,1)}" # 20
+  build_cidr      = "${cidrsubnet(local.vpc_cidr,4,2)}" # 20
+
+  hosts = {
+    access  = "${cidrhost(local.access_cidr, 20)}"
+    gitlab  = "${cidrhost(local.build_cidr, 20)}"
+    jenkins = "${cidrhost(local.build_cidr, 21)}"
+    vault   = "${cidrhost(local.build_cidr, 22)}"
+    awx     = "${cidrhost(local.build_cidr, 23)}"
+  }
 }
 
 data "aws_ami" "centos" {

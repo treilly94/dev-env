@@ -6,6 +6,7 @@ resource "aws_instance" "jenkins_vm" {
   key_name      = "dev-keypair"
 
   subnet_id              = "${aws_subnet.build_subnet.id}"
+  private_ip             = "${local.hosts["jenkins"]}"
   vpc_security_group_ids = ["${aws_security_group.build_sg.id}"]
   depends_on             = ["aws_internet_gateway.gw"]
 
