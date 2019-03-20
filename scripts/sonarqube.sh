@@ -1,0 +1,1 @@
+sudo docker run -d --name sonarqube --restart unless-stopped -p 80:9000 sonarqube

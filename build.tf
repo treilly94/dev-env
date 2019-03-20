@@ -126,3 +126,47 @@ resource "aws_instance" "jenkins_agent" {
     ]
   }
 }
+
+# Sonarqube
+
+resource "aws_instance" "sonarqube_vm" {
+  count = "${var.sonarqube_count}"
+
+  ami           = "${data.aws_ami.centos.id}"
+  instance_type = "t3.micro"
+  key_name      = "dev-keypair"
+
+  subnet_id              = "${aws_subnet.build_subnet.id}"
+  private_ip             = "${local.hosts["sonarqube"]}"
+  vpc_security_group_ids = ["${aws_security_group.build_sg.id}"]
+  depends_on             = ["aws_internet_gateway.gw"]
+
+  root_block_device = {
+    volume_type           = "standard"
+    delete_on_termination = true
+  }
+
+  tags = {
+    Name          = "sonarqube-vm"
+    ResourceGroup = "${local.env}"
+  }
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      host        = "${self.private_ip}"
+      user        = "centos"
+      private_key = "${file("dev-keypair.pem")}"
+
+      bastion_host        = "${aws_instance.access_vm.public_ip}"
+      bastion_user        = "centos"
+      bastion_private_key = "${file("dev-keypair.pem")}"
+    }
+
+    scripts = [
+      "./scripts/update.sh",
+      "./scripts/docker.sh",
+      "./scripts/sonarqube.sh",
+    ]
+  }
+}
