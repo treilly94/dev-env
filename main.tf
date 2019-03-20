@@ -17,6 +17,7 @@ locals {
     sonarqube = "${cidrhost(local.build_cidr, 22)}"
     vault     = "${cidrhost(local.build_cidr, 23)}"
     awx       = "${cidrhost(local.build_cidr, 24)}"
+    openfass  = "${cidrhost(local.build_cidr, 25)}"
   }
 }
 

@@ -1,7 +1,9 @@
-gitlab_count = "1"
+gitlab = "true"
 
-jenkins_count = "1"
+jenkins = "true"
 
 jenkins_agent_count = "1"
 
-sonarqube_count = "1"
+sonarqube = "true"
+
+vault = "true"

@@ -1,7 +1,7 @@
 # Gitlab
 
 resource "aws_instance" "gitlab_vm" {
-  count = "${var.gitlab_count}"
+  count = "${var.gitlab == "true" ? "1" : "0"}"
 
   ami           = "${data.aws_ami.centos.id}"
   instance_type = "t3.small"
@@ -45,7 +45,7 @@ resource "aws_instance" "gitlab_vm" {
 # Jenkins
 
 resource "aws_instance" "jenkins_vm" {
-  count = "${var.jenkins_count}"
+  count = "${var.jenkins == "true" ? "1" : "0"}"
 
   ami           = "${data.aws_ami.centos.id}"
   instance_type = "t3.micro"
@@ -130,7 +130,7 @@ resource "aws_instance" "jenkins_agent" {
 # Sonarqube
 
 resource "aws_instance" "sonarqube_vm" {
-  count = "${var.sonarqube_count}"
+  count = "${var.sonarqube == "true" ? "1" : "0"}"
 
   ami           = "${data.aws_ami.centos.id}"
   instance_type = "t3.small"
@@ -167,6 +167,50 @@ resource "aws_instance" "sonarqube_vm" {
       "./scripts/update.sh",
       "./scripts/docker.sh",
       "./scripts/sonarqube.sh",
+    ]
+  }
+}
+
+# Vault
+
+resource "aws_instance" "vault_agent" {
+  count = "${var.vault == "true" ? "1" : "0"}"
+
+  ami           = "${data.aws_ami.centos.id}"
+  instance_type = "${local.default_vm_size}"
+  key_name      = "dev-keypair"
+
+  subnet_id              = "${aws_subnet.build_subnet.id}"
+  private_ip             = "${local.hosts["vault"]}"
+  vpc_security_group_ids = ["${aws_security_group.build_sg.id}"]
+  depends_on             = ["aws_internet_gateway.gw"]
+
+  root_block_device = {
+    volume_type           = "standard"
+    delete_on_termination = true
+  }
+
+  tags = {
+    Name          = "vault-vm"
+    ResourceGroup = "${local.env}"
+  }
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      host        = "${self.private_ip}"
+      user        = "centos"
+      private_key = "${file("dev-keypair.pem")}"
+
+      bastion_host        = "${aws_instance.access_vm.public_ip}"
+      bastion_user        = "centos"
+      bastion_private_key = "${file("dev-keypair.pem")}"
+    }
+
+    scripts = [
+      "./scripts/update.sh",
+      "./scripts/docker.sh",
+      "./scripts/vault.sh",
     ]
   }
 }

@@ -1,11 +1,11 @@
-variable "gitlab_count" {
+variable "gitlab" {
   type    = "string"
-  default = "0"
+  default = "false"
 }
 
-variable "jenkins_count" {
+variable "jenkins" {
   type    = "string"
-  default = "0"
+  default = "false"
 }
 
 variable "jenkins_agent_count" {
@@ -13,7 +13,12 @@ variable "jenkins_agent_count" {
   default = "0"
 }
 
-variable "sonarqube_count" {
+variable "sonarqube" {
   type    = "string"
-  default = "0"
+  default = "false"
+}
+
+variable "vault" {
+  type    = "string"
+  default = "false"
 }
