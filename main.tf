@@ -16,8 +16,9 @@ locals {
     jenkins   = "${cidrhost(local.build_cidr, 21)}"
     sonarqube = "${cidrhost(local.build_cidr, 22)}"
     vault     = "${cidrhost(local.build_cidr, 23)}"
-    awx       = "${cidrhost(local.build_cidr, 24)}"
-    openfass  = "${cidrhost(local.build_cidr, 25)}"
+    nexus     = "${cidrhost(local.build_cidr, 24)}"
+    awx       = "${cidrhost(local.build_cidr, 25)}"
+    openfass  = "${cidrhost(local.build_cidr, 26)}"
   }
 }
 
