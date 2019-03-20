@@ -4,7 +4,7 @@ resource "aws_instance" "gitlab_vm" {
   count = "${var.gitlab_count}"
 
   ami           = "${data.aws_ami.centos.id}"
-  instance_type = "t3.micro"
+  instance_type = "t3.small"
   key_name      = "dev-keypair"
 
   subnet_id              = "${aws_subnet.build_subnet.id}"
@@ -133,7 +133,7 @@ resource "aws_instance" "sonarqube_vm" {
   count = "${var.sonarqube_count}"
 
   ami           = "${data.aws_ami.centos.id}"
-  instance_type = "t3.micro"
+  instance_type = "t3.small"
   key_name      = "dev-keypair"
 
   subnet_id              = "${aws_subnet.build_subnet.id}"
